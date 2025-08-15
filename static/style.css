@@ -1,0 +1,417 @@
+/* Reset and base styles */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    color: #222;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.header {
+    background: #2d3e50;
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.market-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+.market-status.open #marketStatusIcon { color: #2ecc40; }
+.market-status.closed #marketStatusIcon { color: #e74c3c; }
+
+.main-content {
+    display: flex;
+    flex: 1;
+    background: #f5f7fa;
+}
+
+.sidebar {
+    width: 260px;
+    background: #f4f4f4;
+    padding: 1rem;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 220px;
+}
+.sidebar h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    color: #2d3e50;
+}
+.search-input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+#tickerInput {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+#searchBtn {
+    background: #2d3e50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.period-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+.period-btn {
+    background: #e0e0e0;
+    border: none;
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    margin-bottom: 0.2rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+.period-btn.active, .period-btn:hover {
+    background: #2d3e50;
+    color: #fff;
+}
+.model-section select {
+    width: 100%;
+    padding: 0.4rem;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    margin-bottom: 0.5rem;
+}
+#predictBtn {
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+}
+.companies-list, .watchlist {
+    margin-top: 0.5rem;
+}
+.company-item {
+    cursor: pointer;
+    padding: 0.5rem 0.3rem;
+    border-radius: 4px;
+    margin-bottom: 0.2rem;
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+.company-item:hover {
+    background: #dbeafe;
+}
+.company-ticker {
+    font-weight: bold;
+    color: #2d3e50;
+}
+.company-name {
+    font-size: 0.95rem;
+    color: #555;
+}
+.watchlist-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.98rem;
+}
+.watchlist-ticker { font-weight: bold; }
+.watchlist-price { min-width: 60px; }
+.watchlist-change.positive { color: #27ae60; }
+.watchlist-change.negative { color: #e74c3c; }
+
+.dashboard {
+    flex: 1;
+    padding: 2rem;
+    background: #f5f7fa;
+    min-width: 0;
+}
+.stock-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 1rem 2rem;
+}
+.stock-info h2 {
+    margin: 0;
+    font-size: 2rem;
+    color: #2d3e50;
+}
+.price-info {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+.current-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.price-change {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+.price-change.positive { color: #27ae60; }
+.price-change.negative { color: #e74c3c; }
+.last-updated {
+    font-size: 0.95rem;
+    color: #888;
+}
+.realtime-controls button {
+    background: #2d3e50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.realtime-controls button.stop {
+    background: #e74c3c;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.metric-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 1rem;
+    text-align: center;
+}
+.metric-card h4 {
+    margin: 0 0 0.5rem 0;
+    color: #2d3e50;
+    font-size: 1rem;
+}
+.metric-card span {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+.chart-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 1rem;
+    flex: 1 1 350px;
+    min-width: 320px;
+    margin-bottom: 1rem;
+}
+.chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+.chart-controls, .indicator-toggles {
+    display: flex;
+    gap: 0.5rem;
+}
+.chart-type-btn {
+    background: #e0e0e0;
+    border: none;
+    border-radius: 4px;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+.chart-type-btn.active, .chart-type-btn:hover {
+    background: #2d3e50;
+    color: #fff;
+}
+.indicator-toggles label {
+    margin-right: 0.8rem;
+    font-size: 0.95rem;
+    color: #2d3e50;
+}
+.indicator-toggles input[type="checkbox"] {
+    margin-right: 0.2rem;
+}
+
+.chart {
+    min-height: 220px;
+}
+
+.predictions-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+.card-header h3 {
+    margin: 0 0 0.5rem 0;
+    color: #2d3e50;
+}
+.predictions-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.prediction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+.prediction-model {
+    font-weight: bold;
+    color: #2d3e50;
+}
+.prediction-price {
+    font-size: 1.1rem;
+    color: #27ae60;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 1rem;
+    margin: 2rem auto;
+    width: fit-content;
+    font-size: 1.1rem;
+}
+.loading i {
+    font-size: 1.5rem;
+    color: #2d3e50;
+}
+
+.welcome-card {
+    background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem auto;
+    max-width: 600px;
+}
+.welcome-content .welcome-icon {
+    font-size: 2.5rem;
+    color: #2d3e50;
+    margin-bottom: 1rem;
+}
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+    text-align: left;
+    display: inline-block;
+}
+.features-list li {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #2d3e50;
+}
+.features-list i {
+    color: #27ae60;
+    margin-right: 0.5rem;
+}
+
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.toast {
+    background: #2d3e50;
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+    font-size: 1rem;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.toast.success { background: #27ae60; }
+.toast.warning { background: #f39c12; }
+.toast.error { background: #e74c3c; }
+
+@media (max-width: 900px) {
+    .main-content {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .dashboard {
+        padding: 1rem;
+    }
+    .charts-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+    .sidebar {
+        padding: 0.5rem;
+    }
+    .dashboard {
+        padding: 0.5rem;
+    }
+    .welcome-card {
+        padding: 1rem;
+    }
+}

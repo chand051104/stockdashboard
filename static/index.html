@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Stock Market Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-chart-line"></i> Enhanced Stock Market Dashboard</h1>
+            <div class="market-status" id="marketStatus">
+                <i class="fas fa-circle" id="marketStatusIcon"></i>
+                <span id="marketStatusText">Loading...</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="search-section">
+                    <h3><i class="fas fa-search"></i> Search Stock</h3>
+                    <div class="search-input-group">
+                        <input type="text" id="tickerInput" placeholder="Enter ticker symbol (e.g., AAPL)" autocomplete="off">
+                        <button onclick="loadStock()" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Time Period Selector -->
+                <div class="period-section">
+                    <h3><i class="fas fa-clock"></i> Time Period</h3>
+                    <div class="period-buttons">
+                        <button class="period-btn" data-period="1d">1D</button>
+                        <button class="period-btn" data-period="5d">5D</button>
+                        <button class="period-btn active" data-period="1mo">1M</button>
+                        <button class="period-btn" data-period="3mo">3M</button>
+                        <button class="period-btn" data-period="6mo">6M</button>
+                        <button class="period-btn" data-period="1y">1Y</button>
+                        <button class="period-btn" data-period="2y">2Y</button>
+                        <button class="period-btn" data-period="5y">5Y</button>
+                        <button class="period-btn" data-period="ytd">YTD</button>
+                        <button class="period-btn" data-period="max">MAX</button>
+                    </div>
+                </div>
+
+                <!-- AI Model Selector -->
+                <div class="model-section">
+                    <h3><i class="fas fa-brain"></i> AI Model</h3>
+                    <select id="modelSelect">
+                        <option value="ensemble">Ensemble (Recommended)</option>
+                        <option value="lstm">LSTM Neural Network</option>
+                        <option value="random_forest">Random Forest</option>
+                        <option value="xgboost">XGBoost</option>
+                        <option value="linear">Linear Regression</option>
+                        <option value="all">All Models</option>
+                    </select>
+                    <button onclick="getPrediction()" id="predictBtn">
+                        <i class="fas fa-magic"></i> Predict Price
+                    </button>
+                </div>
+
+                <!-- Popular Stocks -->
+                <div class="companies-section">
+                    <h3><i class="fas fa-star"></i> Popular Stocks</h3>
+                    <div id="companiesList" class="companies-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Real-time Watchlist -->
+                <div class="watchlist-section">
+                    <h3><i class="fas fa-eye"></i> Real-time Watchlist</h3>
+                    <div id="watchlist" class="watchlist">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Dashboard -->
+            <main class="dashboard">
+                <!-- Current Stock Info -->
+                <div class="stock-header" id="stockHeader" style="display: none;">
+                    <div class="stock-info">
+                        <h2 id="currentTicker">AAPL</h2>
+                        <div class="price-info">
+                            <span class="current-price" id="currentPrice">$0.00</span>
+                            <span class="price-change" id="priceChange">+$0.00 (0.00%)</span>
+                            <span class="last-updated" id="lastUpdated">Last updated: --</span>
+                        </div>
+                    </div>
+                    <div class="realtime-controls">
+                        <button onclick="toggleRealTime()" id="realtimeBtn">
+                            <i class="fas fa-play"></i> Start Real-time
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="metrics-grid" id="metricsGrid" style="display: none;">
+                    <div class="metric-card">
+                        <h4>Period High</h4>
+                        <span id="periodHigh">$0.00</span>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Period Low</h4>
+                        <span id="periodLow">$0.00</span>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Volume</h4>
+                        <span id="currentVolume">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <h4>RSI</h4>
+                        <span id="currentRSI">0</span>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Volatility</h4>
+                        <span id="volatility">0%</span>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Trend</h4>
+                        <span id="trend">-</span>
+                    </div>
+                </div>
+
+                <!-- Charts Container -->
+                <div class="charts-container">
+                    <!-- Main Price Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-candlestick"></i> Price Chart</h3>
+                            <div class="chart-controls">
+                                <button class="chart-type-btn active" data-type="candlestick">Candlestick</button>
+                                <button class="chart-type-btn" data-type="line">Line</button>
+                                <button class="chart-type-btn" data-type="area">Area</button>
+                            </div>
+                        </div>
+                        <div id="priceChart" class="chart"></div>
+                    </div>
+
+                    <!-- Technical Indicators Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-line"></i> Technical Indicators</h3>
+                            <div class="indicator-toggles">
+                                <label><input type="checkbox" id="showMA20" checked> MA20</label>
+                                <label><input type="checkbox" id="showMA50" checked> MA50</label>
+                                <label><input type="checkbox" id="showBB"> Bollinger Bands</label>
+                                <label><input type="checkbox" id="showRSI" checked> RSI</label>
+                            </div>
+                        </div>
+                        <div id="technicalChart" class="chart"></div>
+                    </div>
+
+                    <!-- Volume Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-bar"></i> Volume</h3>
+                        </div>
+                        <div id="volumeChart" class="chart"></div>
+                    </div>
+                </div>
+
+                <!-- AI Predictions -->
+                <div class="predictions-card" id="predictionsCard" style="display: none;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-crystal-ball"></i> AI Predictions</h3>
+                    </div>
+                    <div id="predictions" class="predictions-content">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Loading Indicator -->
+                <div class="loading" id="loading" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Loading data...</span>
+                </div>
+
+                <!-- Welcome Message -->
+                <div class="welcome-card" id="welcomeCard">
+                    <div class="welcome-content">
+                        <i class="fas fa-chart-line welcome-icon"></i>
+                        <h2>Welcome to Enhanced Stock Dashboard</h2>
+                        <p>Search for a stock symbol or select from popular stocks to get started.</p>
+                        <ul class="features-list">
+                            <li><i class="fas fa-check"></i> Real-time price updates via WebSocket</li>
+                            <li><i class="fas fa-check"></i> Advanced AI predictions (LSTM, Random Forest, XGBoost)</li>
+                            <li><i class="fas fa-check"></i> Multiple time period analysis</li>
+                            <li><i class="fas fa-check"></i> Technical indicators and charts</li>
+                            <li><i class="fas fa-check"></i> Interactive dashboard with live data</li>
+                        </ul>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/script.js"></script>
+</body>
+</html>
